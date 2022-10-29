@@ -1,0 +1,52 @@
+{
+  "name": "games-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/games-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/games-api",
+        "main": "apps/games-api/src/main.ts",
+        "tsConfig": "apps/games-api/tsconfig.app.json",
+        "assets": ["apps/games-api/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/games-api/src/environments/environment.ts",
+              "with": "apps/games-api/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "options": {
+        "buildTarget": "games-api:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "games-api:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/games-api/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
