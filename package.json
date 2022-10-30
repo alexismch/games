@@ -3,9 +3,22 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "nx": "nx",
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "lint": "nx workspace-lint && nx lint",
+    "affected:apps": "nx affected:apps",
+    "affected:libs": "nx affected:libs",
+    "affected:build": "nx affected:build",
+    "affected:lint": "nx affected:lint",
+    "affected": "nx affected",
+    "format": "nx format:write",
+    "format:write": "nx format:write",
+    "format:check": "nx format:check",
+    "prettier:check": "prettier --config .prettierrc --check \"apps/**/*.{ts,css,html}\"",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged",
+    "commitlint": "commitlint"
   },
   "private": true,
   "dependencies": {
@@ -17,6 +30,8 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "@nestjs/schematics": "^9.0.0",
     "@nrwl/cli": "15.0.4",
     "@nrwl/eslint-plugin-nx": "15.0.4",
@@ -30,8 +45,18 @@
     "@typescript-eslint/parser": "^5.36.1",
     "eslint": "~8.26.0",
     "eslint-config-prettier": "8.1.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "nx": "15.0.4",
     "prettier": "^2.6.2",
     "typescript": "~4.8.2"
+  },
+  "lint-staged": {
+    "**/*.{json,css,scss,md,ts}": [
+      "yarn format:write -- --uncommitted"
+    ],
+    "**/*.{ts, js}": [
+      "yarn affected:lint -- --uncommitted --parallel"
+    ]
   }
 }
