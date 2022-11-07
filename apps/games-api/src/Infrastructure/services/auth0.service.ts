@@ -6,17 +6,18 @@ import {
 } from '../infrastructure.constant';
 import { Auth0Error } from '../enum';
 import { AuthError } from '@games/utils';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class Auth0Service {
    private authenticationClient: AuthenticationClient;
    private managementClient: ManagementClient;
 
-   constructor() {
+   constructor(configService: ConfigService) {
       const options = {
-         domain: process.env.AUTH0_DOMAIN,
-         clientId: process.env.AUTH0_CLIENT_ID,
-         clientSecret: process.env.AUTH0_CLIENT_SECRET,
+         domain: configService.get('AUTH0_DOMAIN'),
+         clientId: configService.get('AUTH0_CLIENT_ID'),
+         clientSecret: configService.get('AUTH0_CLIENT_SECRET'),
       };
 
       this.authenticationClient = new AuthenticationClient(options);

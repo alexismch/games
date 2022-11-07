@@ -1,14 +1,14 @@
 type User {
-  id: ID!
-  email: String!
-  username: String!
+   id: ID!
+   email: String!
+   username: String!
 }
 
 type Query {
-  users: [User!]!
-  user(id: ID!): User
+   users: [User!]!
+   user(id: ID!): User
 }
 
 type Mutation {
-  deleteUser(id: ID!): User
+   deleteUser(id: ID!): User
 }

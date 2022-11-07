@@ -1,8 +1,7 @@
+import { UtilsConfig } from './utils.config';
 import { Module } from '@nestjs/common';
 
 @Module({
-   controllers: [],
-   providers: [],
-   exports: [],
+   providers: [UtilsConfig],
 })
 export class UtilsModule {}

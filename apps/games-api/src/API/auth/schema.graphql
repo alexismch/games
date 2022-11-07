@@ -1,8 +1,12 @@
 type UserRegistered {
-  id: ID!
+   id: ID!
 }
 
 type Mutation {
-  login(login: String!, password: String!): Boolean
-  register(email: String!, username: String!, password: String!): UserRegistered!
+   login(login: String!, password: String!): Boolean
+   register(
+      email: String!
+      username: String!
+      password: String!
+   ): UserRegistered!
 }

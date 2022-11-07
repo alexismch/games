@@ -5,9 +5,17 @@ import { APIModule } from './API/API.module';
 import { DomainModule } from './Domain/Domain.module';
 import { InfrastructureModule } from './Infrastructure/Infrastructure.module';
 import { join } from 'path';
+import { ConfigModule } from '@nestjs/config';
+import { UtilsModule } from '@games/utils';
 
 @Module({
    imports: [
+      ConfigModule.forRoot({
+         isGlobal: true,
+         expandVariables: true,
+         cache: true,
+      }),
+      UtilsModule,
       GraphQLModule.forRoot<ApolloDriverConfig>({
          driver: ApolloDriver,
          typePaths: ['./**/*.graphql'],

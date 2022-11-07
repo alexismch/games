@@ -1,4 +1,5 @@
 import * as Crypto from 'crypto';
+import { UtilsConfig } from '../utils.config';
 
 export class CryptoUtils {
    private static ENCRYPTION_ALGORITHM = 'aes-256-cbc';
@@ -8,11 +9,18 @@ export class CryptoUtils {
     * Encrypt a string
     */
    static encrypt(from: string): string {
+      if (!UtilsConfig.configService) {
+         throw new Error('UtilsModule not imported in AppModule.');
+      }
+
       // Initialization vector
       const iv = Crypto.randomBytes(16);
       const cipher = Crypto.createCipheriv(
          CryptoUtils.ENCRYPTION_ALGORITHM,
-         Buffer.from(process.env.CRYPT_KEY, 'binary'),
+         Buffer.from(
+            UtilsConfig.configService.get<string>('CRYPT_KEY'),
+            'binary',
+         ),
          iv,
       );
       let encrypted = cipher.update(from, 'utf-8', 'hex');
@@ -24,11 +32,18 @@ export class CryptoUtils {
     * Decrypt a string
     */
    static decrypt(from: string): string {
+      if (!UtilsConfig.configService) {
+         throw new Error('UtilsModule not imported in AppModule.');
+      }
+
       const encryptedData = from.split(':');
       const iv = Buffer.from(encryptedData[0], 'hex');
       const decipher = Crypto.createDecipheriv(
          CryptoUtils.ENCRYPTION_ALGORITHM,
-         Buffer.from(process.env.CRYPT_KEY, 'binary'),
+         Buffer.from(
+            UtilsConfig.configService.get<string>('CRYPT_KEY'),
+            'binary',
+         ),
          iv,
       );
       const decrypted = decipher.update(encryptedData[1], 'hex', 'utf-8');
@@ -39,9 +54,16 @@ export class CryptoUtils {
     * Hash a string with additional values
     */
    static hash(value: string, additionalValues?: string[]): string {
+      if (!UtilsConfig.configService) {
+         throw new Error('UtilsModule not imported in AppModule.');
+      }
+
       const hmac = Crypto.createHmac(
          CryptoUtils.HASH_ALGORITHM,
-         Buffer.from(process.env.HASH_KEY, 'binary'),
+         Buffer.from(
+            UtilsConfig.configService.get<string>('HASH_KEY'),
+            'binary',
+         ),
       );
 
       // Values array
