@@ -1,0 +1,26 @@
+// This is your Prisma model file,
+// learn more about it in the docs: https://pris.ly/d/prisma-model
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+  output          = "../apps/games-api/src/Prisma/client"
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  email_bidx    String?  @unique
+  username      String   @unique
+  username_bidx String?  @unique
+  alias         String   @unique
+  alias_bidx    String?  @unique
+  registeredOn  DateTime @default(now())
+
+  @@map("users")
+}
