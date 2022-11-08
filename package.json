@@ -15,7 +15,7 @@
       "format": "nx format:write",
       "format:write": "nx format:write",
       "format:check": "nx format:check",
-      "prettier:check": "prettier --config .prettierrc --check \"apps/**/*.{ts,css,html}\"",
+      "prettier:check": "prettier --config .prettierrc --check \"apps/**/*.{ts,css,html,json,graphql}\"",
       "prepare": "husky install",
       "postinstall": "prisma generate",
       "lint-staged": "lint-staged",

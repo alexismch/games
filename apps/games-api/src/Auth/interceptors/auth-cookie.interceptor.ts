@@ -9,7 +9,7 @@ import { filter, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../services';
 import { AuthType } from '@games/utils';
-import { IAuthResponse } from '../interfaces';
+import { ILoginAuthResponse } from '../interfaces';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
@@ -18,8 +18,8 @@ export class AuthCookieInterceptor implements NestInterceptor {
 
    intercept(
       context: ExecutionContext,
-      next: CallHandler<IAuthResponse>,
-   ): Observable<IAuthResponse> | Promise<Observable<IAuthResponse>> {
+      next: CallHandler<ILoginAuthResponse>,
+   ): Observable<ILoginAuthResponse> | Promise<Observable<ILoginAuthResponse>> {
       return next.handle().pipe(
          filter((data) => data.type === AuthType.TOKEN),
          map((data) => {

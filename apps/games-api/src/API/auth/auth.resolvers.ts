@@ -6,7 +6,7 @@ import { Auth0Service } from '../../Infrastructure';
 import { InternalServerErrorException, UseInterceptors } from '@nestjs/common';
 import { GqlIp as Ip } from '@games/utils';
 
-@Resolver('User')
+@Resolver('Auth')
 export class AuthResolvers {
    constructor(
       private authService: AuthService,

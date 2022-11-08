@@ -3,12 +3,18 @@ import { Auth0Service } from '../../Infrastructure';
 import { AUTH_COOKIE_ACCESS_TOKEN } from '../auth.constant';
 import { CookieOptions, Response } from 'express';
 import { DateTime } from 'luxon';
+import { IAuthResponse, ILoginAuthResponse } from '../interfaces';
+import { AuthType } from '@games/utils';
 
 @Injectable()
 export class AuthService {
    constructor(private auth0Service: Auth0Service) {}
 
-   async login(username: string, password: string, forwardedFor?: string) {
+   async login(
+      username: string,
+      password: string,
+      forwardedFor?: string,
+   ): Promise<ILoginAuthResponse> {
       try {
          return await this.auth0Service.signIn(
             username,
@@ -26,6 +32,14 @@ export class AuthService {
       } catch (e) {
          throw new BadRequestException(e.message);
       }
+   }
+
+   async logout(response: Response): Promise<IAuthResponse> {
+      this.clearCookies(response);
+
+      return {
+         type: AuthType.SUCCESS,
+      };
    }
 
    /**

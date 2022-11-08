@@ -1,4 +1,12 @@
-type AuthResponse {
+interface AuthResponse {
+   type: String!
+}
+
+type LogoutAuthResponse implements AuthResponse {
+   type: String!
+}
+
+type LoginAuthResponse implements AuthResponse {
    type: String!
    accessToken: String
    expiresIn: Int
@@ -9,10 +17,11 @@ type UserRegistered {
 }
 
 type Mutation {
-   login(login: String!, password: String!): AuthResponse
+   login(login: String!, password: String!): LoginAuthResponse
    register(
       email: String!
       username: String!
       password: String!
    ): UserRegistered!
+   logout: LogoutAuthResponse
 }

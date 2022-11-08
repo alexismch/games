@@ -7,7 +7,7 @@ import {
 import { Auth0Error } from '../enum';
 import { AuthError, AuthType } from '@games/utils';
 import { ConfigService } from '@nestjs/config';
-import { IAuthResponse } from '../../Auth';
+import { ILoginAuthResponse } from '../../Auth';
 
 @Injectable()
 export class Auth0Service {
@@ -29,7 +29,7 @@ export class Auth0Service {
       username: string,
       password: string,
       forwardedFor?: string,
-   ): Promise<IAuthResponse> {
+   ): Promise<ILoginAuthResponse> {
       try {
          const value = await this.authenticationClient.passwordGrant(
             {

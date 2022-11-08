@@ -8,8 +8,16 @@
 /* eslint-disable */
 
 export interface AuthResponse {
+   type: string;
+}
+
+export interface LoginAuthResponse extends AuthResponse {
    accessToken?: Nullable<string>;
    expiresIn?: Nullable<number>;
+   type: string;
+}
+
+export interface LogoutAuthResponse extends AuthResponse {
    type: string;
 }
 
@@ -18,7 +26,10 @@ export interface IMutation {
    login(
       login: string,
       password: string,
-   ): Nullable<AuthResponse> | Promise<Nullable<AuthResponse>>;
+   ): Nullable<LoginAuthResponse> | Promise<Nullable<LoginAuthResponse>>;
+   logout():
+      | Nullable<LogoutAuthResponse>
+      | Promise<Nullable<LogoutAuthResponse>>;
    register(
       email: string,
       password: string,

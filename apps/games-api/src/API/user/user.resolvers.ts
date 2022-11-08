@@ -2,9 +2,9 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from '../../graphql.schema';
 import { UserService } from '../../Domain/user';
 import { UseGuards } from '@nestjs/common';
-import { JwtGqlAuthGuard } from '../../Auth';
+import { JwtGqlAuthGuard as JwtAuthGuard } from '../../Auth';
 
-@UseGuards(JwtGqlAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Resolver('User')
 export class UsersResolvers {
    constructor(private usersService: UserService) {}
