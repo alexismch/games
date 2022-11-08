@@ -1,9 +1,14 @@
+type AuthResponse {
+  type: String!
+  accessToken: String
+}
+
 type UserRegistered {
    id: ID!
 }
 
 type Mutation {
-   login(login: String!, password: String!): Boolean
+   login(login: String!, password: String!): AuthResponse
    register(
       email: String!
       username: String!

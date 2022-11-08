@@ -1,9 +1,10 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { AuthService } from '../../Auth';
+import { AuthCookieInterceptor, AuthService } from '../../Auth';
 import { UserRegistered } from '../../graphql.schema';
 import { UserService } from '../../Domain/user';
 import { Auth0Service } from '../../Infrastructure';
-import { InternalServerErrorException } from '@nestjs/common';
+import { InternalServerErrorException, UseInterceptors } from '@nestjs/common';
+import { GqlIp as Ip } from '@games/utils';
 
 @Resolver('User')
 export class AuthResolvers {
@@ -14,11 +15,13 @@ export class AuthResolvers {
    ) {}
 
    @Mutation('login')
+   @UseInterceptors(AuthCookieInterceptor)
    async login(
       @Args('login') login: string,
       @Args('password') password: string,
-   ): Promise<Boolean> {
-      return Boolean(await this.authService.login(login, password));
+      @Ip() ip: string,
+   ) {
+      return await this.authService.login(login, password, ip);
    }
 
    @Mutation('register')

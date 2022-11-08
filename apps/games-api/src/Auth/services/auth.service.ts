@@ -1,16 +1,22 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Auth0Service } from '../../Infrastructure';
-import { AuthError } from '@games/utils';
+import { AUTH_COOKIE_ACCESS_TOKEN } from '../auth.constant';
+import { CookieOptions, Response } from 'express';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class AuthService {
    constructor(private auth0Service: Auth0Service) {}
 
-   async login(username: string, password: string) {
+   async login(username: string, password: string, forwardedFor?: string) {
       try {
-         return await this.auth0Service.signIn(username, password);
-      } catch {
-         throw new BadRequestException(AuthError.INVALID_CREDENTIALS);
+         return await this.auth0Service.signIn(
+            username,
+            password,
+            forwardedFor,
+         );
+      } catch (e) {
+         throw new BadRequestException(e.message);
       }
    }
 
@@ -20,5 +26,35 @@ export class AuthService {
       } catch (e) {
          throw new BadRequestException(e.message);
       }
+   }
+
+   /**
+    * Assign cookies
+    */
+   setCookies(response: Response, accessToken: string) {
+      response.cookie(
+         AUTH_COOKIE_ACCESS_TOKEN,
+         accessToken,
+         this.getCookieOptions(DateTime.now().plus({ hour: 1 }).toJSDate()),
+      );
+   }
+
+   /**
+    * Invalid cookies
+    */
+   clearCookies(response: Response) {
+      const cookieOptions = this.getCookieOptions(new Date(0), false);
+      response.clearCookie(AUTH_COOKIE_ACCESS_TOKEN, cookieOptions);
+   }
+
+   private getCookieOptions(expiresOn: Date, signed = true): CookieOptions {
+      // TODO : adapt for prod
+      return {
+         domain: 'localhost',
+         httpOnly: true,
+         secure: false,
+         signed,
+         expires: expiresOn,
+      };
    }
 }

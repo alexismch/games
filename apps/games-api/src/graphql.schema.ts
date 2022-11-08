@@ -7,12 +7,17 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export interface AuthResponse {
+   accessToken?: Nullable<string>;
+   type: string;
+}
+
 export interface IMutation {
    deleteUser(id: string): Nullable<User> | Promise<Nullable<User>>;
    login(
       login: string,
       password: string,
-   ): Nullable<boolean> | Promise<Nullable<boolean>>;
+   ): Nullable<AuthResponse> | Promise<Nullable<AuthResponse>>;
    register(
       email: string,
       password: string,
