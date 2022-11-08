@@ -31,11 +31,15 @@ export class AuthService {
    /**
     * Assign cookies
     */
-   setCookies(response: Response, accessToken: string) {
+   setCookies(response: Response, accessToken: string, expiresIn?: number) {
       response.cookie(
          AUTH_COOKIE_ACCESS_TOKEN,
          accessToken,
-         this.getCookieOptions(DateTime.now().plus({ hour: 1 }).toJSDate()),
+         this.getCookieOptions(
+            DateTime.now()
+               .plus({ second: expiresIn || 3600 })
+               .toJSDate(),
+         ),
       );
    }
 

@@ -9,6 +9,7 @@
 
 export interface AuthResponse {
    accessToken?: Nullable<string>;
+   expiresIn?: Nullable<number>;
    type: string;
 }
 

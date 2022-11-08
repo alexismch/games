@@ -1,6 +1,7 @@
 type AuthResponse {
-  type: String!
-  accessToken: String
+   type: String!
+   accessToken: String
+   expiresIn: Int
 }
 
 type UserRegistered {

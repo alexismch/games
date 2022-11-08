@@ -26,7 +26,11 @@ export class AuthCookieInterceptor implements NestInterceptor {
             const ctx = GqlExecutionContext.create(context);
             const response: Response = ctx.getContext().req.res;
 
-            this.authService.setCookies(response, data.accessToken);
+            this.authService.setCookies(
+               response,
+               data.accessToken,
+               data.expiresIn,
+            );
             data.type = AuthType.SUCCESS;
             delete data.accessToken;
 

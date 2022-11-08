@@ -43,6 +43,7 @@ export class Auth0Service {
          return {
             type: AuthType.TOKEN,
             accessToken: value.access_token,
+            expiresIn: value.expires_in,
          };
       } catch {
          throw new Error(AuthError.INVALID_CREDENTIALS);
