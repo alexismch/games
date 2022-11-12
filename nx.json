@@ -1,28 +1,28 @@
 {
-  "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "games",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/nx-cloud",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
-        "accessToken": "NzIxM2M3ODMtZTMwZi00ZTU3LTg0YmYtZmNiODJjZjAxY2ZmfHJlYWQtd3JpdGU="
+   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+   "npmScope": "games",
+   "tasksRunnerOptions": {
+      "default": {
+         "runner": "@nrwl/nx-cloud",
+         "options": {
+            "cacheableOperations": ["build", "lint", "test", "e2e"],
+            "accessToken": "NzIxM2M3ODMtZTMwZi00ZTU3LTg0YmYtZmNiODJjZjAxY2ZmfHJlYWQtd3JpdGU="
+         }
       }
-    }
-  },
-  "targetDefaults": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
-    },
-    "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
-    }
-  },
-  "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "production": ["default", "!{projectRoot}/.eslintrc.json"],
-    "sharedGlobals": []
-  },
-  "defaultProject": "games-api"
+   },
+   "targetDefaults": {
+      "build": {
+         "dependsOn": ["^build"],
+         "inputs": ["production", "^production"]
+      },
+      "lint": {
+         "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+      }
+   },
+   "namedInputs": {
+      "default": ["{projectRoot}/**/*", "sharedGlobals"],
+      "production": ["default", "!{projectRoot}/.eslintrc.json"],
+      "sharedGlobals": []
+   },
+   "defaultProject": "games-api"
 }

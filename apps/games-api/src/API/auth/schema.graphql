@@ -1,0 +1,29 @@
+scalar EmailAddress
+
+interface AuthResponse {
+   type: String!
+}
+
+type LogoutAuthResponse implements AuthResponse {
+   type: String!
+}
+
+type LoginAuthResponse implements AuthResponse {
+   type: String!
+   accessToken: String
+   expiresIn: Int
+}
+
+type UserRegistered {
+   id: ID!
+}
+
+type Mutation {
+   login(login: String!, password: String!): LoginAuthResponse
+   register(
+      email: EmailAddress!
+      username: String!
+      password: String!
+   ): UserRegistered!
+   logout: LogoutAuthResponse
+}
