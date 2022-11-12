@@ -20,7 +20,8 @@
       "postinstall": "prisma generate",
       "lint-staged": "lint-staged",
       "commitlint": "commitlint",
-      "database:push": "prisma db push"
+      "database:push": "prisma db push",
+      "generate:typings": "ts-node generate-typings"
    },
    "private": true,
    "dependencies": {
@@ -39,7 +40,9 @@
       "class-validator": "^0.13.2",
       "cookie-parser": "^1.4.6",
       "graphql": "^16.6.0",
+      "graphql-scalars": "^1.20.1",
       "graphql-subscriptions": "^2.0.0",
+      "helmet": "^6.0.0",
       "jwks-rsa": "^3.0.0",
       "luxon": "^3.1.0",
       "passport": "^0.6.0",

@@ -1,12 +1,28 @@
-type User {
+scalar DateTime
+scalar EmailAddress
+
+interface BaseUser {
    id: ID!
-   email: String!
    username: String!
+   registeredOn: DateTime!
+}
+
+type User implements BaseUser {
+   id: ID!
+   username: String!
+   registeredOn: DateTime!
+}
+
+type SelfUser implements BaseUser {
+   id: ID!
+   email: EmailAddress!
+   username: String!
+   registeredOn: DateTime!
 }
 
 type Query {
+   user: SelfUser!
    users: [User!]!
-   user(id: ID!): User
 }
 
 type Mutation {

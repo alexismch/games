@@ -7,6 +7,10 @@ import { InfrastructureModule } from './Infrastructure/Infrastructure.module';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { UtilsModule } from '@games/utils';
+import {
+   typeDefs as scalarTypeDefs,
+   resolvers as scalarResolvers,
+} from 'graphql-scalars';
 
 @Module({
    imports: [
@@ -23,12 +27,18 @@ import { UtilsModule } from '@games/utils';
          installSubscriptionHandlers: true,
          autoTransformHttpErrors: true,
          bodyParserConfig: true,
-         cors: true,
+         cors: {
+            origin: '*',
+            methods: ['POST'],
+            credentials: true,
+         },
          sortSchema: true,
          definitions: {
             path: join(process.cwd(), 'apps/games-api/src/graphql.schema.ts'),
             outputAs: 'interface',
          },
+         typeDefs: [...scalarTypeDefs],
+         resolvers: { ...scalarResolvers },
       }),
       InfrastructureModule,
       APIModule,

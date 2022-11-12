@@ -1,3 +1,5 @@
+scalar EmailAddress
+
 interface AuthResponse {
    type: String!
 }
@@ -19,7 +21,7 @@ type UserRegistered {
 type Mutation {
    login(login: String!, password: String!): LoginAuthResponse
    register(
-      email: String!
+      email: EmailAddress!
       username: String!
       password: String!
    ): UserRegistered!

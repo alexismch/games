@@ -1,28 +1,27 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 
 import { AppModule } from './app.module';
 import { PrismaService } from './Prisma';
 
 async function bootstrap() {
    const app = await NestFactory.create(AppModule);
-
    const configService = app.get(ConfigService);
 
+   // Prisma
    const prismaService = app.get(PrismaService);
    await prismaService.enableShutdownHooks(app);
 
-   // TODO : vérifier
+   // Pipes
+   // TODO : check
    app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
+   // Middlewares
    app.use(cookieParser(configService.get('COOKIE_SECRET')));
+   app.use(helmet());
 
    const port = configService.get('PORT') || 3333;
    await app.listen(port);

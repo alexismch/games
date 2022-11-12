@@ -1,8 +1,10 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { User } from '../../graphql.schema';
+import { User, SelfUser } from '../../graphql.schema';
 import { UserService } from '../../Domain/user';
 import { UseGuards } from '@nestjs/common';
 import { JwtGqlAuthGuard as JwtAuthGuard } from '../../Auth';
+import { User as RequestUser } from '../../Prisma';
+import { GqlUser } from '@games/utils';
 
 @UseGuards(JwtAuthGuard)
 @Resolver('User')
@@ -15,12 +17,12 @@ export class UsersResolvers {
    }
 
    @Query('user')
-   async user(@Args('id') args: string): Promise<User> {
-      return this.usersService.findOne(args);
+   async user(@GqlUser() user: RequestUser): Promise<SelfUser> {
+      return this.usersService.findOne(user.id);
    }
 
    @Mutation('deleteUser')
-   async delete(@Args('id') args: string): Promise<User> {
-      return this.usersService.delete(args);
+   async delete(@Args('id') id: string): Promise<User> {
+      return this.usersService.delete(id);
    }
 }
