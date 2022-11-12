@@ -28,14 +28,11 @@ export class EncryptionMiddleware extends PrismaMiddleware {
       return EncryptionMiddleware.decrypt(result);
    }
 
-   private static encrypt(
-      source: Object | Object[],
-      onlyKeepHash: boolean = false,
-   ) {
+   private static encrypt(source, onlyKeepHash = false) {
       if (isArray(source)) {
          const encryptedObjects = [];
 
-         for (let i = 0; i < (source as Object[]).length; i++) {
+         for (let i = 0; i < source.length; i++) {
             encryptedObjects.push(this.encrypt(source[i], onlyKeepHash));
          }
 
@@ -65,11 +62,11 @@ export class EncryptionMiddleware extends PrismaMiddleware {
       }
    }
 
-   private static decrypt(source: Object | Object[]) {
+   private static decrypt(source) {
       if (isArray(source)) {
          const decryptedObjects = [];
 
-         for (let i = 0; i < (source as Object[]).length; i++) {
+         for (let i = 0; i < source.length; i++) {
             decryptedObjects.push(this.decrypt(source[i]));
          }
 
