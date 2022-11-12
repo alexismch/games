@@ -1,1 +1,2 @@
 apps/games-api/src/Prisma/client
+apps/games-api/src/graphql.schema.ts
