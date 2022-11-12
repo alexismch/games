@@ -28,6 +28,20 @@ export class UserService {
       return user;
    }
 
+   async findOneByAlias(alias: string): Promise<User | null> {
+      const user = await this.prisma.user.findUnique({
+         where: {
+            alias,
+         },
+      });
+
+      if (!user) {
+         throw new NotFoundException();
+      }
+
+      return user;
+   }
+
    async findAll(): Promise<User[]> {
       return this.prisma.user.findMany({});
    }

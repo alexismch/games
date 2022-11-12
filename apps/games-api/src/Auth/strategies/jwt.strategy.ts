@@ -5,10 +5,11 @@ import { passportJwtSecret } from 'jwks-rsa';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { AUTH_COOKIE_ACCESS_TOKEN } from '../auth.constant';
+import { AuthService } from '../services';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-   constructor(configService: ConfigService) {
+   constructor(configService: ConfigService, private authService: AuthService) {
       super({
          secretOrKeyProvider: passportJwtSecret({
             cache: true,
@@ -27,7 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       });
    }
 
-   validate(payload: { sub: string }) {
-      return { alias: payload?.sub };
+   async validate(payload: { sub: string }) {
+      return await this.authService.getUserByAlias(payload.sub);
    }
 }

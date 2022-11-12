@@ -1,14 +1,26 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+   BadRequestException,
+   CACHE_MANAGER,
+   Inject,
+   Injectable,
+   UnauthorizedException,
+} from '@nestjs/common';
 import { Auth0Service } from '../../Infrastructure';
-import { AUTH_COOKIE_ACCESS_TOKEN } from '../auth.constant';
+import { AUTH_COOKIE_ACCESS_TOKEN, CACHE_PREFIX } from '../auth.constant';
 import { CookieOptions, Response } from 'express';
 import { DateTime } from 'luxon';
 import { IAuthResponse, ILoginAuthResponse } from '../interfaces';
 import { AuthType } from '@games/utils';
+import { Cache } from 'cache-manager';
+import { UserService } from '../../Domain/user';
 
 @Injectable()
 export class AuthService {
-   constructor(private auth0Service: Auth0Service) {}
+   constructor(
+      @Inject(CACHE_MANAGER) private cacheManager: Cache,
+      private auth0Service: Auth0Service,
+      private userService: UserService,
+   ) {}
 
    async login(
       username: string,
@@ -40,6 +52,30 @@ export class AuthService {
       return {
          type: AuthType.SUCCESS,
       };
+   }
+
+   async getUserByAlias(alias: string) {
+      try {
+         const key = AuthService.getAliasCacheKey(alias);
+
+         // Check in cache
+         let user = await this.cacheManager.get(key);
+         if (user) {
+            return user;
+         }
+
+         // Retrieve and set in cache
+         user = await this.userService.findOneByAlias(alias);
+         await this.cacheManager.set(key, user);
+
+         return user;
+      } catch {
+         throw new UnauthorizedException();
+      }
+   }
+
+   private static getAliasCacheKey(alias: string) {
+      return `${CACHE_PREFIX}_${alias}`;
    }
 
    /**
